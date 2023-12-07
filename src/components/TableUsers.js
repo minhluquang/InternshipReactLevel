@@ -64,7 +64,6 @@ const TableUsers = () => {
         pageCount={totalPages}
         previousLabel="< previous"
         renderOnZeroPageCount={null}
-        
         breakClassName={"page-item"}
         breakLinkClassName={"page-link"}
         containerClassName={"pagination"}
