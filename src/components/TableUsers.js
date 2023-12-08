@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import ReactPaginate from "react-paginate";
+import ModalAddNew from "./ModalAddNew";
 
 import { fetchAllUser } from "../services/UserService";
 
@@ -8,6 +9,12 @@ const TableUsers = () => {
   const [userList, setUserList] = useState([]);
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+
+  const [isShowModalAddNew, setIsShowModalAddNew] = useState(false);
+
+  const handleClose = () => {
+    setIsShowModalAddNew(false);
+  };
 
   useEffect(() => {
     // Call apis
@@ -27,8 +34,21 @@ const TableUsers = () => {
     getUsers(+event.selected + 1);
   };
 
+  const handleUpdateUser = (user) => {
+    setUserList([user, ...userList]);
+  };
+
   return (
     <>
+      <div className="my-3 d-flex justify-content-between">
+        <b>List users:</b>
+        <button
+          className="btn btn-success"
+          onClick={() => setIsShowModalAddNew(true)}
+        >
+          Add new user
+        </button>
+      </div>
       <div>
         <Table striped bordered hover variant="white">
           <thead>
@@ -55,6 +75,12 @@ const TableUsers = () => {
           </tbody>
         </Table>
       </div>
+
+      <ModalAddNew
+        show={isShowModalAddNew}
+        handleClose={handleClose}
+        handleUpdateUser={handleUpdateUser}
+      />
 
       <ReactPaginate
         breakLabel="..."
