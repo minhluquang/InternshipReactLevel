@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import ReactPaginate from "react-paginate";
+
 import ModalAddNew from "./ModalAddNew";
+import ModalEditUser from "./ModalEditUser";
 
 import { fetchAllUser } from "../services/UserService";
 
@@ -11,8 +13,11 @@ const TableUsers = () => {
   const [totalPages, setTotalPages] = useState(0);
 
   const [isShowModalAddNew, setIsShowModalAddNew] = useState(false);
+  const [isShowModalEditUser, setIsShowModalEditUser] = useState(false);
+  const [dataUser, setDataUser] = useState({});
 
   const handleClose = () => {
+    setIsShowModalEditUser(false);
     setIsShowModalAddNew(false);
   };
 
@@ -57,6 +62,7 @@ const TableUsers = () => {
               <th>Email</th>
               <th>First name</th>
               <th>Last name</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -69,6 +75,18 @@ const TableUsers = () => {
                     <td>{item.email}</td>
                     <td>{item.first_name}</td>
                     <td>{item.last_name}</td>
+                    <td>
+                      <button
+                        className="btn btn-warning"
+                        onClick={() => {
+                          setIsShowModalEditUser(true);
+                          setDataUser(item)
+                        }}
+                      >
+                        Edit
+                      </button>
+                      <button className="btn btn-danger ms-3">Delete</button>
+                    </td>
                   </tr>
                 );
               })}
@@ -81,6 +99,8 @@ const TableUsers = () => {
         handleClose={handleClose}
         handleUpdateUser={handleUpdateUser}
       />
+
+      <ModalEditUser show={isShowModalEditUser} handleClose={handleClose} dataUser={dataUser}/>
 
       <ReactPaginate
         breakLabel="..."
