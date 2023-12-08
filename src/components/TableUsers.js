@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import ReactPaginate from "react-paginate";
+import _ from "lodash";
 
 import ModalAddNew from "./ModalAddNew";
 import ModalEditUser from "./ModalEditUser";
@@ -14,7 +15,7 @@ const TableUsers = () => {
 
   const [isShowModalAddNew, setIsShowModalAddNew] = useState(false);
   const [isShowModalEditUser, setIsShowModalEditUser] = useState(false);
-  const [dataUser, setDataUser] = useState({});
+  const [dataUserEdit, setDataUserEdit] = useState({});
 
   const handleClose = () => {
     setIsShowModalEditUser(false);
@@ -41,6 +42,13 @@ const TableUsers = () => {
 
   const handleUpdateUser = (user) => {
     setUserList([user, ...userList]);
+  };
+
+  const handleEditUserFromModal = (user) => {
+    let cloneListUsers = _.cloneDeep(userList);
+    let index = userList.findIndex((item) => item.id === user.id);
+    cloneListUsers[index].first_name = user.first_name;
+    setUserList(cloneListUsers);
   };
 
   return (
@@ -80,7 +88,7 @@ const TableUsers = () => {
                         className="btn btn-warning"
                         onClick={() => {
                           setIsShowModalEditUser(true);
-                          setDataUser(item)
+                          setDataUserEdit(item);
                         }}
                       >
                         Edit
@@ -100,7 +108,12 @@ const TableUsers = () => {
         handleUpdateUser={handleUpdateUser}
       />
 
-      <ModalEditUser show={isShowModalEditUser} handleClose={handleClose} dataUser={dataUser}/>
+      <ModalEditUser
+        show={isShowModalEditUser}
+        handleClose={handleClose}
+        handleEditUserFromModal={handleEditUserFromModal}
+        dataUserEdit={dataUserEdit}
+      />
 
       <ReactPaginate
         breakLabel="..."
