@@ -7,6 +7,7 @@ import ModalAddNew from "./ModalAddNew";
 import ModalEditUser from "./ModalEditUser";
 
 import { fetchAllUser } from "../services/UserService";
+import ModalDeleteUser from "./ModalDeleteUser";
 
 const TableUsers = () => {
   const [userList, setUserList] = useState([]);
@@ -17,9 +18,13 @@ const TableUsers = () => {
   const [isShowModalEditUser, setIsShowModalEditUser] = useState(false);
   const [dataUserEdit, setDataUserEdit] = useState({});
 
+  const [isShowModalDeleteUser, setIsShowModalDeleteUser] = useState(false);
+  const [dataUserDelete, setDataUserDelete] = useState({});
+
   const handleClose = () => {
     setIsShowModalEditUser(false);
     setIsShowModalAddNew(false);
+    setIsShowModalDeleteUser(false);
   };
 
   useEffect(() => {
@@ -49,6 +54,10 @@ const TableUsers = () => {
     let index = userList.findIndex((item) => item.id === user.id);
     cloneListUsers[index].first_name = user.first_name;
     setUserList(cloneListUsers);
+  };
+
+  const handleDeleteUser = (user) => {
+    setDataUserDelete(user);
   };
 
   return (
@@ -93,7 +102,15 @@ const TableUsers = () => {
                       >
                         Edit
                       </button>
-                      <button className="btn btn-danger ms-3">Delete</button>
+                      <button
+                        className="btn btn-danger ms-3"
+                        onClick={() => {
+                          setIsShowModalDeleteUser(true);
+                          handleDeleteUser(item);
+                        }}
+                      >
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 );
@@ -113,6 +130,12 @@ const TableUsers = () => {
         handleClose={handleClose}
         handleEditUserFromModal={handleEditUserFromModal}
         dataUserEdit={dataUserEdit}
+      />
+
+      <ModalDeleteUser
+        show={isShowModalDeleteUser}
+        handleClose={handleClose}
+        dataUserDelete={dataUserDelete}
       />
 
       <ReactPaginate
