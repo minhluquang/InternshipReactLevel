@@ -60,6 +60,12 @@ const TableUsers = () => {
     setDataUserDelete(user);
   };
 
+  const handleDeleteUserFromModal = (user) => {
+    let cloneListUsers = _.cloneDeep(userList);
+    cloneListUsers = cloneListUsers.filter((item) => item.id !== user.id);
+    setUserList(cloneListUsers);
+  };
+
   return (
     <>
       <div className="my-3 d-flex justify-content-between">
@@ -128,14 +134,15 @@ const TableUsers = () => {
       <ModalEditUser
         show={isShowModalEditUser}
         handleClose={handleClose}
-        handleEditUserFromModal={handleEditUserFromModal}
         dataUserEdit={dataUserEdit}
+        handleEditUserFromModal={handleEditUserFromModal}
       />
 
       <ModalDeleteUser
         show={isShowModalDeleteUser}
         handleClose={handleClose}
         dataUserDelete={dataUserDelete}
+        handleDeleteUserFromModal={handleDeleteUserFromModal}
       />
 
       <ReactPaginate

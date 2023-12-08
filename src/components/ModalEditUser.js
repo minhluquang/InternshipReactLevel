@@ -24,6 +24,8 @@ const ModalEditUser = (props) => {
       handleEditUserFromModal({ first_name: name, id: dataUserEdit.id });
       toast.success("Edit user is succeed!");
       handleClose();
+    } else {
+      toast.error("An error when edit user");
     }
   };
 
@@ -59,7 +61,9 @@ const ModalEditUser = (props) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleEditUser}>Confirm</Button>
+          <Button variant="primary" onClick={handleEditUser}>
+            Confirm
+          </Button>
         </Modal.Footer>
       </Modal>
     </>

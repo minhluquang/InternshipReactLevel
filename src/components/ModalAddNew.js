@@ -22,7 +22,7 @@ const ModalAddNew = (props) => {
       toast.success("An user created succeed!");
       handleUpdateUser({ first_name: name, id: res.id });
     } else {
-      toast.error("An error!");
+      toast.error("An error when add new user");
     }
   };
 
