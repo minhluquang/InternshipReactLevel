@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import ReactPaginate from "react-paginate";
 import _ from "lodash";
+import { debounce } from 'lodash';
 
 import ModalAddNew from "./ModalAddNew";
 import ModalEditUser from "./ModalEditUser";
@@ -78,6 +79,19 @@ const TableUsers = () => {
     setUserList(cloneListUsers);
   };
 
+  const handleSearch = debounce((event) => {
+    let term = event.target.value;
+    if (term) {
+      let cloneListUsers = _.cloneDeep(userList);
+      cloneListUsers = cloneListUsers.filter((item) =>
+        item.email.includes(term)
+      );
+      setUserList(cloneListUsers);
+    } else {
+      getUsers(1);
+    }
+  }, 500);
+
   return (
     <>
       <div className="my-3 d-flex justify-content-between">
@@ -88,6 +102,15 @@ const TableUsers = () => {
         >
           Add new user
         </button>
+      </div>
+      <div className="col-4 my-3">
+        <input
+          className="form-control"
+          placeholder="Search user by email..."
+          onChange={(event) => {
+            handleSearch(event);
+          }}
+        />
       </div>
       <div>
         <Table striped bordered hover variant="white">
