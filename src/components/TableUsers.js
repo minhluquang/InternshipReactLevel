@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import ReactPaginate from "react-paginate";
 import _ from "lodash";
-import { debounce } from 'lodash';
+import { debounce } from "lodash";
+import { CSVLink, CSVDownload } from "react-csv";
 
 import ModalAddNew from "./ModalAddNew";
 import ModalEditUser from "./ModalEditUser";
@@ -92,16 +93,36 @@ const TableUsers = () => {
     }
   }, 500);
 
+  const csvData = [
+    ["firstname", "lastname", "email"],
+    ["Ahmed", "Tomi", "ah@smthing.co.com"],
+    ["Raed", "Labes", "rl@smthing.co.com"],
+    ["Yezzi", "Min l3b", "ymin@cocococo.com"],
+  ];
+
   return (
     <>
       <div className="my-3 d-flex justify-content-between">
         <b>List users:</b>
-        <button
-          className="btn btn-success"
-          onClick={() => setIsShowModalAddNew(true)}
-        >
-          Add new user
-        </button>
+        <div className="d-flex justify-content-center gap-3">
+          <label htmlFor="importFile" className="btn btn-warning text-white">
+            <i class="fa-solid fa-file-import"></i> Import
+          </label>
+          <input type="file" id="importFile" hidden/>
+          <CSVLink
+            data={csvData}
+            filename={"my-file.csv"}
+            className="btn btn-primary"
+          >
+            <i class="fa-solid fa-file-export"></i> Export
+          </CSVLink>
+          <button
+            className="btn btn-success"
+            onClick={() => setIsShowModalAddNew(true)}
+          >
+            <i className="fa-solid fa-user-plus"></i> Add new user
+          </button>
+        </div>
       </div>
       <div className="col-4 my-3">
         <input
