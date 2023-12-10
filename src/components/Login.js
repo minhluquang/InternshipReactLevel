@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { loginUser } from "../services/UserService";
+import { toast } from "react-toastify";
 import { NavLink } from "react-router-dom";
 
 import "./Login.scss";
@@ -8,6 +10,18 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const [isShowPassword, setIsShowPassword] = useState(false);
+
+  const handleLogin = async () => {
+    if (!email || !password) {
+      toast.error("Email or password is required!");
+      return;
+    }
+
+    const res = await loginUser(email, password);
+    if (res && res.token) {
+      localStorage.setItem("token", res.token);
+    }
+  };
 
   return (
     <div className="container-login col-5">
@@ -33,7 +47,9 @@ const Login = () => {
           onClick={() => setIsShowPassword(!isShowPassword)}
         ></i>
       </div>
-      <button disabled={email && password ? false : true}>Log in</button>
+      <button disabled={email && password ? false : true} onClick={handleLogin}>
+        Log in
+      </button>
       <NavLink to="/" className="go-back">
         <i className="fa-solid fa-angles-left"></i> Go back
       </NavLink>

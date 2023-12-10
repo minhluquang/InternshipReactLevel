@@ -95,3 +95,10 @@
     text-decoration: none;
   }
 }
+
+
+// Delete eye on ms-egde
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
