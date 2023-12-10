@@ -6,6 +6,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import "./App.scss";
+import Home from "./components/Home";
 
 function App() {
   return (
@@ -13,7 +14,8 @@ function App() {
       <div className="app-container">
         <Header />
         <Container>
-          <TableUsers />
+          <Home />
+          {/* <TableUsers /> */}
         </Container>
       </div>
 
