@@ -26,6 +26,8 @@ const TableUsers = () => {
   const [sortBy, setSortBy] = useState("acs");
   const [sortField, setSortField] = useState("id");
 
+  const [dataExport, setDataExport] = useState([]);
+
   const handleClose = () => {
     setIsShowModalEditUser(false);
     setIsShowModalAddNew(false);
@@ -100,6 +102,22 @@ const TableUsers = () => {
     ["Yezzi", "Min l3b", "ymin@cocococo.com"],
   ];
 
+  const getUsersExport = (event, done) => {
+    const result = [];
+    if (userList) {
+      result.push(["Id", "Email", "First name", "Last name"]);
+      userList.map((item) => {
+        const arr = [];
+        arr[0] = item.id;
+        arr[1] = item.email;
+        arr[2] = item.first_name;
+        arr[3] = item.last_name;
+        result.push(arr);
+      });
+      setDataExport(result);
+    }
+  };
+
   return (
     <>
       <div className="my-3 d-flex justify-content-between">
@@ -108,10 +126,12 @@ const TableUsers = () => {
           <label htmlFor="importFile" className="btn btn-warning text-white">
             <i class="fa-solid fa-file-import"></i> Import
           </label>
-          <input type="file" id="importFile" hidden/>
+          <input type="file" id="importFile" hidden />
           <CSVLink
-            data={csvData}
-            filename={"my-file.csv"}
+            data={dataExport}
+            filename={"users.csv"}
+            asyncOnClick={true}
+            onClick={getUsersExport}
             className="btn btn-primary"
           >
             <i class="fa-solid fa-file-export"></i> Export
