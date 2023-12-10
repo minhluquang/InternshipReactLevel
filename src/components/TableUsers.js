@@ -3,7 +3,9 @@ import Table from "react-bootstrap/Table";
 import ReactPaginate from "react-paginate";
 import _ from "lodash";
 import { debounce } from "lodash";
-import { CSVLink, CSVDownload } from "react-csv";
+import { CSVLink } from "react-csv";
+import Papa from "papaparse";
+import { toast } from "react-toastify";
 
 import ModalAddNew from "./ModalAddNew";
 import ModalEditUser from "./ModalEditUser";
@@ -95,13 +97,6 @@ const TableUsers = () => {
     }
   }, 500);
 
-  const csvData = [
-    ["firstname", "lastname", "email"],
-    ["Ahmed", "Tomi", "ah@smthing.co.com"],
-    ["Raed", "Labes", "rl@smthing.co.com"],
-    ["Yezzi", "Min l3b", "ymin@cocococo.com"],
-  ];
-
   const getUsersExport = (event, done) => {
     const result = [];
     if (userList) {
@@ -115,7 +110,45 @@ const TableUsers = () => {
         result.push(arr);
       });
       setDataExport(result);
+      done();
     }
+  };
+
+  const handleImportCSV = (e) => {
+    if (!e.target.files[0] && e.target.file[0].type !== "text/csv") {
+      toast.error("Please, upload CSV files...");
+      return;
+    }
+    const file = e.target.files[0];
+    Papa.parse(file, {
+      header: false,
+      complete: function (responses) {
+        const rawCSV = responses.data;
+        if (rawCSV.length > 0) {
+          if (
+            rawCSV[0][0] === "email" &&
+            rawCSV[0][1] === "first_name" &&
+            rawCSV[0][2] === "last_name"
+          ) {
+            let result = [];
+            rawCSV.map((item, idx) => {
+              if (item.length === 3 && idx > 0) {
+                const obj = {};
+                obj.email = item[0];
+                obj.first_name = item[1];
+                obj.last_name = item[2];
+                result.push(obj);
+              }
+            });
+            setUserList(result);
+          } else {
+            toast.error("Wrong format CSV file...");
+          }
+        } else {
+          toast.error("Can't not found data from CSV file...");
+        }
+      },
+    });
   };
 
   return (
@@ -124,9 +157,14 @@ const TableUsers = () => {
         <b>List users:</b>
         <div className="d-flex justify-content-center gap-3">
           <label htmlFor="importFile" className="btn btn-warning text-white">
-            <i class="fa-solid fa-file-import"></i> Import
+            <i className="fa-solid fa-file-import"></i> Import
           </label>
-          <input type="file" id="importFile" hidden />
+          <input
+            type="file"
+            id="importFile"
+            hidden
+            onChange={handleImportCSV}
+          />
           <CSVLink
             data={dataExport}
             filename={"users.csv"}
@@ -134,7 +172,7 @@ const TableUsers = () => {
             onClick={getUsersExport}
             className="btn btn-primary"
           >
-            <i class="fa-solid fa-file-export"></i> Export
+            <i className="fa-solid fa-file-export"></i> Export
           </CSVLink>
           <button
             className="btn btn-success"
