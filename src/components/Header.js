@@ -2,11 +2,32 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import { toast } from "react-toastify";
 import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import logoApp from "../assets/images/logo192.png";
+import { useState } from "react";
 
 const Header = () => {
+  const navigate = useNavigate();
+
+  const [isShowDropdown, setIsShowDropdown] = useState(false);
+
+  const handleShowDropdown = () => {
+    setIsShowDropdown(true);
+  };
+
+  const handleHideDropdown = () => {
+    setIsShowDropdown(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    toast.success("Log out success!");
+    navigate("/");
+  };
+
   return (
     <>
       <Navbar expand="lg" className="bg-body-tertiary">
@@ -32,13 +53,26 @@ const Header = () => {
               </NavLink>
             </Nav>
             <Nav>
-              <NavDropdown title="Setting" id="basic-nav-dropdown">
-                <NavLink to="/login" className="dropdown-item">
+              <NavDropdown
+                title="Setting"
+                id="basic-nav-dropdown"
+                show={isShowDropdown}
+                onMouseEnter={handleShowDropdown}
+                onMouseLeave={handleHideDropdown}
+              >
+                <NavLink
+                  to="/login"
+                  className="dropdown-item"
+                  onClick={handleHideDropdown}
+                >
                   Login
                 </NavLink>
-                <NavLink to="/logout" className="dropdown-item">
+                <NavDropdown.Item
+                  className="dropdown-item"
+                  onClick={handleLogout}
+                >
                   Logout
-                </NavLink>
+                </NavDropdown.Item>
               </NavDropdown>
             </Nav>
           </Navbar.Collapse>
