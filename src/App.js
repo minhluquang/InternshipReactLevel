@@ -1,3 +1,6 @@
+import { useContext } from "react";
+import { UserContext } from "./context/UserContext";
+
 import Header from "./components/Header";
 import Container from "react-bootstrap/Container";
 import { Routes, Route } from "react-router-dom";
@@ -11,6 +14,10 @@ import TableUsers from "./components/TableUsers";
 import Login from "./components/Login";
 
 function App() {
+  const { user } = useContext(UserContext);
+
+  console.log(user)
+
   return (
     <>
       <div className="app-container">
