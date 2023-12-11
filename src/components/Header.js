@@ -7,9 +7,12 @@ import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 import logoApp from "../assets/images/logo192.png";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../context/UserContext";
 
 const Header = () => {
+  const { user, logout } = useContext(UserContext);
+
   const navigate = useNavigate();
 
   const [isShowDropdown, setIsShowDropdown] = useState(false);
@@ -23,7 +26,7 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    logout();
     toast.success("Log out success!");
     navigate("/");
   };
@@ -44,37 +47,47 @@ const Header = () => {
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
-              <NavLink to="/" className="nav-link">
-                Home
-              </NavLink>
-              <NavLink to="/users" className="nav-link">
-                Manage users
-              </NavLink>
-            </Nav>
-            <Nav>
-              <NavDropdown
-                title="Setting"
-                id="basic-nav-dropdown"
-                show={isShowDropdown}
-                onMouseEnter={handleShowDropdown}
-                onMouseLeave={handleHideDropdown}
-              >
-                <NavLink
-                  to="/login"
-                  className="dropdown-item"
-                  onClick={handleHideDropdown}
-                >
-                  Login
-                </NavLink>
-                <NavDropdown.Item
-                  className="dropdown-item"
-                  onClick={handleLogout}
-                >
-                  Logout
-                </NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
+            {user && window.location.pathname !== "/login" && (
+              <>
+                <Nav className="me-auto">
+                  <NavLink to="/" className="nav-link">
+                    Home
+                  </NavLink>
+                  <NavLink to="/users" className="nav-link">
+                    Manage users
+                  </NavLink>
+                </Nav>
+                <Nav>
+                  {user && user.email && (
+                    <span className="nav-link">Welcome {user.email}</span>
+                  )}
+                  <NavDropdown
+                    title="Setting"
+                    id="basic-nav-dropdown"
+                    show={isShowDropdown}
+                    onMouseEnter={handleShowDropdown}
+                    onMouseLeave={handleHideDropdown}
+                  >
+                    {user && user.auth === true ? (
+                      <NavDropdown.Item
+                        className="dropdown-item"
+                        onClick={handleLogout}
+                      >
+                        Logout
+                      </NavDropdown.Item>
+                    ) : (
+                      <NavLink
+                        to="/login"
+                        className="dropdown-item"
+                        onClick={handleHideDropdown}
+                      >
+                        Login
+                      </NavLink>
+                    )}
+                  </NavDropdown>
+                </Nav>
+              </>
+            )}
           </Navbar.Collapse>
         </Container>
       </Navbar>

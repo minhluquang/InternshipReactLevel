@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "./context/UserContext";
 
 import Header from "./components/Header";
@@ -14,9 +14,18 @@ import TableUsers from "./components/TableUsers";
 import Login from "./components/Login";
 
 function App() {
-  const { user } = useContext(UserContext);
+  const { user, loginContext } = useContext(UserContext);
 
-  console.log(user)
+  console.log(user);
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      loginContext(
+        localStorage.getItem("email"),
+        localStorage.getItem("token")
+      );
+    }
+  }, []);
 
   return (
     <>

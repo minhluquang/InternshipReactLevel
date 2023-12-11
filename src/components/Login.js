@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { loginUser } from "../services/UserService";
 import { toast } from "react-toastify";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 import "./Login.scss";
+import { UserContext } from "../context/UserContext";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { user, loginContext } = useContext(UserContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,7 +26,7 @@ const Login = () => {
     const res = await loginUser(email, password);
     if (res && res.token) {
       toast.success("Log in success!");
-      localStorage.setItem("token", res.token);
+      loginContext(email, res.token);
       navigate("/");
     } else {
       // Error
