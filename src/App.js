@@ -10,7 +10,13 @@ import "react-toastify/dist/ReactToastify.css";
 import "./App.scss";
 import AppRoutes from "./routes/AppRoutes";
 
+import { useSelector } from "react-redux";
+
 function App() {
+  const dataUserRedux = useSelector((state) => state.user.account);
+
+  console.log(dataUserRedux)
+
   const { user, loginContext } = useContext(UserContext);
 
   console.log(user);
