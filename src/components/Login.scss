@@ -1,4 +1,5 @@
 .container-login {
+  width: 100%;
   display: flex;
   flex-direction: column;
   margin: 20px auto 0;
@@ -95,7 +96,6 @@
     text-decoration: none;
   }
 }
-
 
 // Delete eye on ms-egde
 input[type="password"]::-ms-reveal,

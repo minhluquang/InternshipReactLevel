@@ -153,9 +153,9 @@ const TableUsers = () => {
 
   return (
     <>
-      <div className="my-3 d-flex justify-content-between">
+      <div className="my-3 d-sm-flex justify-content-between">
         <b>List users:</b>
-        <div className="d-flex justify-content-center gap-3">
+        <div className="d-flex justify-content-center gap-3 mt-2 mt-sm-0">
           <label htmlFor="importFile" className="btn btn-warning text-white">
             <i className="fa-solid fa-file-import"></i> Import
           </label>
@@ -182,7 +182,7 @@ const TableUsers = () => {
           </button>
         </div>
       </div>
-      <div className="col-4 my-3">
+      <div className="col-sm-4 col-12 my-3">
         <input
           className="form-control"
           placeholder="Search user by email..."
@@ -191,7 +191,7 @@ const TableUsers = () => {
           }}
         />
       </div>
-      <div>
+      <div className="overflow-auto">
         <Table striped bordered hover variant="white">
           <thead>
             <tr>
@@ -248,7 +248,7 @@ const TableUsers = () => {
                     <td>{item.email}</td>
                     <td>{item.first_name}</td>
                     <td>{item.last_name}</td>
-                    <td>
+                    <td className="d-flex justify-content-center d-flex justify-content-sm-start">
                       <button
                         className="btn btn-warning"
                         onClick={() => {
@@ -296,6 +296,8 @@ const TableUsers = () => {
       />
 
       <ReactPaginate
+        className="d-flex justify-content-center list-unstyled mt-sm-0 mt-3"
+
         breakLabel="..."
         nextLabel="next >"
         onPageChange={handlePageClick}

@@ -23,10 +23,10 @@ const Login = () => {
       return;
     }
     setLoadingAPI(true);
-    const res = await loginUser(email, password);
+    const res = await loginUser(email.trim(), password);
     if (res && res.token) {
       toast.success("Log in success!");
-      loginContext(email, res.token);
+      loginContext(email.trim(), res.token);
       navigate("/");
     } else {
       // Error
@@ -44,8 +44,14 @@ const Login = () => {
     }
   }, []);
 
+  const handleEnter = (e) => {
+    if (e.keyCode === 13) {
+      handleLogin();
+    }
+  };
+
   return (
-    <div className="container-login col-5">
+    <div className="container-login col-sm-5 col-12">
       <h3>Login</h3>
       <label>Email or username ( eve.holt@reqres.in )</label>
       <input
@@ -60,6 +66,7 @@ const Login = () => {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          onKeyDown={handleEnter}
         />
         <i
           className={
