@@ -6,13 +6,16 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { BrowserRouter } from "react-router-dom";
 import { UserProvider } from "./context/UserContext";
+import ErrorBoundary from "./components/ErrorBoundary/Error";
 
 ReactDOM.render(
   <React.StrictMode>
     <UserProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <ErrorBoundary>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ErrorBoundary>
     </UserProvider>
   </React.StrictMode>,
   document.getElementById("root")
